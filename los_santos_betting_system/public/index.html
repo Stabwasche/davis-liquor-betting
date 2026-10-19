@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Davis Liquor Store - Kazı Kazan & Inside Track</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🍸 DAVIS LIQUOR STORE</h1>
+            <p class="ooc-warning"><strong>YASAL UYARI (OOC):</strong> Bu platform, GTA World roleplay evreninde yer alan kurgusal <em>Davis Liquor Store</em> için tasarlanmıştır. İçerisinde gerçek para veya kripto varlık geçmez. Tamamen RP amaçlıdır.</p>
+        </header>
+
+        <!-- KAZI KAZAN BÖLÜMÜ -->
+        <section class="scratch-off-section">
+            <h2>🎟️ Los Santos Lottery - Kazı Kazan</h2>
+            <p>1000x Çarpanına kadar büyük ödülü bul! Biletini al ve farenle (bozuk para ile) kazı.</p>
+            
+            <div class="ticket-container">
+                <div class="ticket-background" id="ticketResult">
+                    <span id="winAmount">BİLET ALINIZ</span>
+                </div>
+                <canvas id="scratchCanvas" width="350" height="180"></canvas>
+            </div>
+
+            <div class="controls">
+                <button onclick="buyTicket(1)">$1 Bilet (Silver)</button>
+                <button onclick="buyTicket(5)">$5 Bilet (Gold)</button>
+                <button onclick="buyTicket(10)">$10 Bilet (Diamond)</button>
+            </div>
+        </section>
+
+        <!-- AT YARIŞI (INSIDE TRACK) BÖLÜMÜ -->
+        <section class="inside-track-section">
+            <h2>🏇 Inside Track - San Andreas Yarışları</h2>
+            <div id="race-status" class="status-board">Bir sonraki yarış için atlar bekleniyor...</div>
+            
+            <div class="track">
+                <!-- Kulvar çizgileri ve atlar -->
+                <div class="horse-lane" id="lane-1">
+                    <span class="horse-name">1. Bleeder</span>
+                    <div class="sprite">🐎</div>
+                </div>
+                <div class="horse-lane" id="lane-2">
+                    <span class="horse-name">2. Hennigan's Steed</span>
+                    <div class="sprite">🐎</div>
+                </div>
+                <div class="horse-lane" id="lane-3">
+                    <span class="horse-name">3. Pisswasser Express</span>
+                    <div class="sprite">🐎</div>
+                </div>
+                <div class="horse-lane" id="lane-4">
+                    <span class="horse-name">4. Yellow Jack</span>
+                    <div class="sprite">🐎</div>
+                </div>
+                <div class="horse-lane" id="lane-5">
+                    <span class="horse-name">5. Leonida Lightning</span>
+                    <div class="sprite">🐎</div>
+                </div>
+                <div class="finish-line">BİTİŞ</div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Socket.io İstemcisi -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
