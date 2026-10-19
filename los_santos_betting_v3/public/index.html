@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Davis Liquor &amp; Lotto</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bg" id="bg"></div>
+
+<!-- ANA MENÜ -->
+<main id="menu" class="view">
+  <div class="menu-card">
+    <p class="menu-sub">Davis, Los Santos</p>
+    <h1>DAVIS LIQUOR<br>&amp; LOTTO</h1>
+    <p class="menu-tag">Kapalı gişe. Yetkili personel dışında giriş yok.</p>
+    <nav class="menu-buttons">
+      <button data-go="window">Gişeyi aç</button>
+      <button data-go="track">Inside Track monitörü</button>
+      <button data-go="rules">Kural kitapçığı</button>
+      <a class="btn" href="admin.html">Personel girişi</a>
+    </nav>
+    <p class="menu-foot">Kazı kazan ve at yarışı biletleri için kodunu hazır tut.</p>
+  </div>
+</main>
+
+<!-- OYUN EKRANI -->
+<main id="game" class="view hidden">
+  <header class="topbar">
+    <strong>GİŞE 1 — DAVIS LIQUOR &amp; LOTTO</strong>
+    <span id="clock">Yarış bekleniyor</span>
+    <span class="top-actions">
+      <button data-go="rules" class="small">Kural kitapçığı</button>
+      <button data-go="menu" class="small">Menü</button>
+    </span>
+  </header>
+
+  <div class="floor">
+    <section class="booth">
+      <div class="clerk-frame"><img src="assets/clerk.png" alt="Tezgahtar" class="clerk-img"></div>
+      <div class="bubble">
+        <p id="clerkText"></p>
+      </div>
+    </section>
+
+    <section class="desk" id="deskSide">
+      <form id="slip" class="paper slip" autocomplete="off">
+        <h2>BİLET TESLİM FİŞİ</h2>
+        <label>Bilet kodu<input id="codeIn" maxlength="12" placeholder="K-XXXXXX / A-XXXXXX" spellcheck="false"></label>
+        <label>Karakter adı<input id="nameIn" maxlength="40" placeholder="Ad Soyad"></label>
+        <button type="submit" id="giveBtn">Fişi ver</button>
+      </form>
+
+      <div id="horsePick" class="paper pick hidden">
+        <h2>AT SEÇ</h2>
+        <div id="horseBtns"></div>
+      </div>
+
+      <div id="scratchBox" class="paper scratch hidden">
+        <h2>KAZI KAZAN</h2>
+        <div class="ticket-wrap">
+          <div class="ticket-under"><span id="winText">?</span></div>
+          <canvas id="scratchCanvas" width="320" height="150"></canvas>
+        </div>
+        <p class="hint">Madeni parayla kazı. Alanın çoğunu aç.</p>
+      </div>
+
+      <div id="stampDoc" class="paper doc hidden">
+        <div id="docBody"></div>
+        <div id="stamp" class="stamp"></div>
+      </div>
+    </section>
+
+    <section class="crt-side" id="crtSide">
+      <div class="crt">
+        <div class="screen">
+          <div class="scanlines"></div>
+          <div class="crt-head">INSIDE TRACK</div>
+          <div id="raceStatus" class="crt-status">...</div>
+          <div id="myBet" class="crt-bet"></div>
+          <div class="track" id="track"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- KURAL KİTAPÇIĞI -->
+<aside id="rules" class="rules hidden">
+  <div class="paper rulebook">
+    <h2>KURAL KİTAPÇIĞI</h2>
+    <ol>
+      <li>Biletler yalnızca yetkili personelden alınır. Kodu kimseyle paylaşma.</li>
+      <li>Fişte adı yazan kişi bileti oynar. Başkasının bileti reddedilir.</li>
+      <li>Her kodun tek kullanımı vardır. Oynanan bilet geri alınmaz.</li>
+      <li>Hatalı kodu üst üste 5 kez girersen gişe 30 saniye kapanır.</li>
+      <li>Kazançlar gişeden değil, yönetim tarafından nakit olarak ödenir.</li>
+    </ol>
+    <h3>At yarışı</h3>
+    <p id="rulesRace">Yükleniyor...</p>
+    <table id="oddsTable"></table>
+    <h3>Kazı kazan</h3>
+    <p id="rulesScratch">Yükleniyor...</p>
+    <button data-go="back" class="small">Kapat</button>
+  </div>
+</aside>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="dialogues.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
