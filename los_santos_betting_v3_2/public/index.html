@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Davis Liquor &amp; Lotto</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bg" id="bg"></div>
+
+<!-- ANA MENÜ -->
+<main id="menu" class="view">
+  <div class="menu-wrap">
+    <figure class="cam">
+      <div class="cam-screen">
+        <img src="assets/storefront.jpg" alt="Davis Liquor girişi: Closing Sale afişi ve sarı hava dansçısı">
+        <figcaption class="cam-hud">
+          <span class="rec">● REC</span>
+          <span>CAM 01 / DAVIS LIQUOR ENTRANCE</span>
+          <time id="camTime"></time>
+        </figcaption>
+      </div>
+    </figure>
+    <div class="menu-card">
+      <p class="menu-sub">Davis, Los Santos</p>
+      <h1>DAVIS LIQUOR<br>&amp; LOTTO</h1>
+      <p class="slogan">Final week. Every week.</p>
+      <p class="menu-tag">Cold beer, long odds, no judgment.</p>
+      <nav class="menu-buttons">
+        <button data-go="window">Gişeyi aç</button>
+        <button data-go="order">Sipariş ver</button>
+        <button data-go="track">Inside Track monitörü</button>
+        <button data-go="feedback">Övgü / şikayet defteri</button>
+        <button data-go="rules">Kural kitapçığı</button>
+        <a class="btn" href="admin.html">Personel girişi</a>
+      </nav>
+      <p class="menu-foot">Kazı kazan ve at yarışı biletleri için kodunu hazır tut.
+        <button type="button" id="crtToggle" class="linkbtn">CRT efekti: açık</button></p>
+    </div>
+  </div>
+</main>
+
+<!-- OYUN EKRANI -->
+<main id="game" class="view hidden">
+  <header class="topbar">
+    <strong>GİŞE 1 — DAVIS LIQUOR &amp; LOTTO</strong>
+    <span id="clock">Yarış bekleniyor</span>
+    <span class="top-actions">
+      <button data-go="rules" class="small">Kural kitapçığı</button>
+      <button data-go="menu" class="small">Menü</button>
+    </span>
+  </header>
+
+  <div class="floor">
+    <section class="booth">
+      <div class="clerk-frame"><img src="assets/clerk.png" alt="Tezgahtar" class="clerk-img"></div>
+      <div class="bubble">
+        <p id="clerkText"></p>
+      </div>
+    </section>
+
+    <section class="desk" id="deskSide">
+      <form id="slip" class="paper slip" autocomplete="off">
+        <h2>BİLET TESLİM FİŞİ</h2>
+        <label>Bilet kodu<input id="codeIn" maxlength="12" placeholder="K-XXXXXX / A-XXXXXX" spellcheck="false"></label>
+        <label>Karakter adı<input id="nameIn" maxlength="40" placeholder="Ad Soyad"></label>
+        <button type="submit" id="giveBtn">Fişi ver</button>
+      </form>
+
+      <div id="horsePick" class="paper pick hidden">
+        <h2>AT SEÇ</h2>
+        <div id="horseBtns"></div>
+      </div>
+
+      <div id="scratchBox" class="paper scratch hidden">
+        <h2>KAZI KAZAN</h2>
+        <div class="ticket-wrap">
+          <div class="ticket-under"><span id="winText">?</span></div>
+          <canvas id="scratchCanvas" width="320" height="150"></canvas>
+        </div>
+        <p class="hint">Madeni parayla kazı. Alanın çoğunu aç.</p>
+      </div>
+
+      <div id="stampDoc" class="paper doc hidden">
+        <div id="docBody"></div>
+        <div id="stamp" class="stamp"></div>
+      </div>
+    </section>
+
+    <section class="crt-side" id="crtSide">
+      <div class="crt">
+        <div class="screen">
+          <div class="scanlines"></div>
+          <div class="crt-head">INSIDE TRACK</div>
+          <div id="raceStatus" class="crt-status">...</div>
+          <div id="myBet" class="crt-bet"></div>
+          <div class="track" id="track"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- SİPARİŞ EKRANI -->
+<main id="order" class="view hidden">
+  <header class="topbar">
+    <strong>SİPARİŞ GİŞESİ — DAVIS LIQUOR &amp; LOTTO</strong>
+    <span class="top-actions"><button data-go="menu" class="small">Menü</button></span>
+  </header>
+  <div class="order-floor">
+    <section class="booth">
+      <div class="clerk-frame"><img src="assets/clerk.png" alt="Tezgahtar" class="clerk-img"></div>
+      <div class="bubble"><p id="orderText"></p></div>
+    </section>
+    <section class="shelf" aria-label="Menü">
+      <div id="products" class="products"></div>
+    </section>
+    <section class="paper cart">
+      <h2>SİPARİŞ FİŞİ</h2>
+      <ul id="cartList"></ul>
+      <p class="cart-total">Toplam: <b id="cartTotal">$0</b></p>
+      <label>Karakter adı<input id="orderName" maxlength="40" placeholder="Ad Soyad"></label>
+      <button id="orderBtn" type="button">Siparişi ver</button>
+    </section>
+  </div>
+</main>
+
+<!-- ÖVGÜ / ŞİKAYET DEFTERİ -->
+<aside id="feedback" class="rules hidden">
+  <form id="fbForm" class="paper rulebook" autocomplete="off">
+    <h2>MÜŞTERİ DEFTERİ</h2>
+    <p id="fbReply" class="fb-reply"></p>
+    <fieldset class="fb-kind">
+      <legend>Ne bırakıyorsun?</legend>
+      <label><input type="radio" name="fbKind" value="praise" checked> Övgü</label>
+      <label><input type="radio" name="fbKind" value="complaint"> Şikayet</label>
+    </fieldset>
+    <label class="fb-field">Karakter adı (boş bırakabilirsin)<input id="fbName" maxlength="40" placeholder="Ad Soyad"></label>
+    <label class="fb-field">Mesajın<textarea id="fbText" rows="5" maxlength="500" placeholder="Davis Liquor hakkında ne düşünüyorsun?"></textarea></label>
+    <div class="fb-actions">
+      <button type="submit" id="fbBtn" class="small">Deftere yaz</button>
+      <button type="button" data-go="back" class="small">Kapat</button>
+    </div>
+  </form>
+</aside>
+
+<!-- KURAL KİTAPÇIĞI -->
+<aside id="rules" class="rules hidden">
+  <div class="paper rulebook">
+    <h2>KURAL KİTAPÇIĞI</h2>
+    <ol>
+      <li>Biletler yalnızca yetkili personelden alınır. Kodu kimseyle paylaşma.</li>
+      <li>Fişte adı yazan kişi bileti oynar. Başkasının bileti reddedilir.</li>
+      <li>Her kodun tek kullanımı vardır. Oynanan bilet geri alınmaz.</li>
+      <li>Hatalı kodu üst üste 5 kez girersen gişe 30 saniye kapanır.</li>
+      <li>Kazançlar gişeden değil, yönetim tarafından nakit olarak ödenir.</li>
+    </ol>
+    <h3>At yarışı</h3>
+    <p id="rulesRace">Yükleniyor...</p>
+    <table id="oddsTable"></table>
+    <h3>Kazı kazan</h3>
+    <p id="rulesScratch">Yükleniyor...</p>
+    <button data-go="back" class="small">Kapat</button>
+  </div>
+</aside>
+
+<div class="crt-bezel" aria-hidden="true"><i class="crt-led"></i><span class="crt-brand">DAVIS ELECTRONICS</span></div>
+<div class="crt-fx" aria-hidden="true"></div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="dialogues.js"></script>
+<script src="game.js"></script>
+</body>
+</html>

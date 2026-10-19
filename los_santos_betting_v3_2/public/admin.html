@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Davis Liquor — Yönetim</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<div id="login" class="login">
+  <form id="loginForm" class="card">
+    <h1>Yönetim girişi</h1>
+    <label>Şifre<input type="password" id="pw" autofocus></label>
+    <button>Giriş yap</button>
+    <p id="loginErr" class="err"></p>
+    <a href="index.html">Oyuncu sayfasına dön</a>
+  </form>
+</div>
+
+<div id="app" class="hidden">
+  <header>
+    <strong>Davis Liquor &amp; Lotto — Yönetim</strong>
+    <nav id="tabs">
+      <button data-tab="dash" class="on">Panel</button>
+      <button data-tab="tickets">Biletler</button>
+      <button data-tab="orders">Siparişler <span id="ordBadge" class="badge hidden"></span></button>
+      <button data-tab="products">Ürünler</button>
+      <button data-tab="feedback">Defter <span id="fbBadge" class="badge hidden"></span></button>
+      <button data-tab="logs">Loglar</button>
+      <button data-tab="settings">Ayarlar</button>
+    </nav>
+    <span id="warn" class="warn hidden">Varsayılan şifre kullanılıyor. ADMIN_PASSWORD ayarla.</span>
+  </header>
+
+  <section id="dash" class="tab">
+    <div id="stats" class="stats"></div>
+    <div class="card">
+      <h2>Yarış kontrolü</h2>
+      <p id="raceInfo"></p>
+      <div class="row">
+        <button id="runBtn">Yarışı şimdi başlat</button>
+        <button id="pauseBtn">Otomatik yarışı durdur</button>
+      </div>
+    </div>
+    <div class="card"><h2>Ödeme bekleyen kazançlar</h2><div id="pending" class="tbl"></div></div>
+    <div class="card"><h2>Son yarışlar</h2><div id="raceHist" class="tbl"></div></div>
+  </section>
+
+  <section id="tickets" class="tab hidden">
+    <form id="genForm" class="card">
+      <h2>Bilet oluştur</h2>
+      <div class="grid">
+        <label>Tür<select id="gType"><option value="K">Kazı kazan</option><option value="A">At yarışı</option></select></label>
+        <label>Oyuncu (karakter adı)<input id="gOwner" placeholder="Ad Soyad"></label>
+        <label>Bedel / bahis ($)<input id="gPrice" type="number" min="1"></label>
+        <label id="gHorseWrap">At<select id="gHorse"></select></label>
+        <label>Adet<input id="gQty" type="number" min="1" max="50" value="1"></label>
+      </div>
+      <button>Kod üret</button>
+      <div id="genOut"></div>
+    </form>
+    <div class="card">
+      <h2>Biletler</h2>
+      <div class="row">
+        <input id="tQ" placeholder="Kod veya isim ara">
+        <select id="tStatus">
+          <option value="">Tüm durumlar</option><option value="issued">Verildi (oynanmadı)</option><option value="active">Oynanıyor</option>
+          <option value="won">Kazandı (ödenmedi)</option><option value="lost">Kaybetti</option><option value="paid">Ödendi</option><option value="void">İptal</option>
+        </select>
+      </div>
+      <div id="tList" class="tbl"></div>
+    </div>
+  </section>
+
+  <section id="orders" class="tab hidden">
+    <div class="card">
+      <h2>Siparişler</h2>
+      <div class="row">
+        <select id="oStatus">
+          <option value="">Tüm durumlar</option><option value="new">Yeni</option><option value="ready">Hazır</option>
+          <option value="done">Teslim edildi</option><option value="cancelled">İptal</option>
+        </select>
+      </div>
+      <div id="oList" class="tbl"></div>
+    </div>
+  </section>
+
+  <section id="feedback" class="tab hidden">
+    <div class="card">
+      <h2>Müşteri defteri</h2>
+      <div class="row">
+        <select id="fKind"><option value="">Hepsi</option><option value="praise">Övgüler</option><option value="complaint">Şikayetler</option></select>
+      </div>
+      <div id="fList" class="tbl"></div>
+    </div>
+  </section>
+
+  <section id="products" class="tab hidden">
+    <form id="pForm" class="card">
+      <h2>Ürün ekle</h2>
+      <div class="grid">
+        <label>Ürün adı<input id="pName" maxlength="50" required></label>
+        <label>Fiyat ($)<input id="pPrice" type="number" min="0" value="0"></label>
+        <label>Görsel<input id="pImg" type="file" accept="image/png,image/jpeg,image/webp,image/gif"></label>
+        <label class="inline"><input type="checkbox" id="pStock" checked> Stokta var</label>
+      </div>
+      <button>Ürünü ekle</button>
+      <span id="pMsg" class="muted"></span>
+    </form>
+    <div class="card">
+      <h2>Menü</h2>
+      <p class="muted">Ad ve fiyat alanından çıkınca kaydedilir. Stok düğmesi anında uygulanır ve oyuncu ekranı canlı güncellenir.</p>
+      <div id="pList" class="plist"></div>
+    </div>
+  </section>
+
+  <section id="logs" class="tab hidden">
+    <div class="card">
+      <h2>Olay kayıtları</h2>
+      <div class="row">
+        <input id="lQ" placeholder="Ara (isim, kod...)">
+        <select id="lType">
+          <option value="">Tümü</option><option value="ticket_won">Kazananlar</option><option value="ticket_lost">Kaybedenler</option>
+          <option value="ticket_paid">Ödemeler</option><option value="ticket_created">Bilet üretimi</option><option value="ticket_redeemed">Okutulanlar</option>
+          <option value="feedback_new">Övgü / şikayet</option><option value="order_new">Yeni siparişler</option><option value="order_status">Sipariş durumları</option>
+          <option value="product_stock">Stok değişimleri</option><option value="product_add">Ürün ekleme</option><option value="product_remove">Ürün silme</option>
+          <option value="horse_bet">At bahisleri</option><option value="race_finish">Yarış sonuçları</option><option value="invalid_code">Geçersiz kod</option>
+          <option value="owner_mismatch">Sahiplik uyuşmazlığı</option><option value="admin_login_fail">Hatalı girişler</option>
+        </select>
+        <label class="inline"><input type="checkbox" id="lLive" checked> Canlı</label>
+      </div>
+      <div id="lList" class="tbl"></div>
+      <p class="muted">Tüm olaylar ayrıca data/events.log dosyasına yazılır.</p>
+    </div>
+  </section>
+
+  <section id="settings" class="tab hidden">
+    <form id="setForm" class="card">
+      <h2>Ayarlar</h2>
+      <div class="grid">
+        <label>Yarış aralığı (sn)<input id="sInterval" type="number" min="20"></label>
+        <label>Bahis kapanış (sn kala)<input id="sCutoff" type="number" min="0"></label>
+        <label>Varsayılan kazı kazan bedeli ($)<input id="sScratch" type="number" min="1"></label>
+        <label>Varsayılan at bahsi ($)<input id="sStake" type="number" min="1"></label>
+        <label class="inline"><input type="checkbox" id="sAuto"> Otomatik yarış</label>
+        <label class="inline"><input type="checkbox" id="sStrict"> Bilet sahibi eşleşmesi zorunlu</label>
+      </div>
+      <h3>Atlar</h3>
+      <p class="muted">Şans: kazanma olasılığı ağırlığı. Çarpan: kazanç = bahis x çarpan. Şans toplamı 100 ise ağırlık yüzdeye eşittir.</p>
+      <div id="sHorses" class="grid5"></div>
+      <h3>Kazı kazan ödülleri</h3>
+      <p class="muted">Şans değerleri ağırlıktır. Amorti çıkarsa bilet bedeli iade edilir.</p>
+      <div class="grid">
+        <label>Büyük ödül ($)<input id="pJackAmt" type="number"></label><label>Şansı<input id="pJackW" type="number" step="any"></label>
+        <label>Orta ödül ($)<input id="pBigAmt" type="number"></label><label>Şansı<input id="pBigW" type="number" step="any"></label>
+        <label>Amorti şansı<input id="pRefW" type="number" step="any"></label><label>Boş şansı<input id="pNoneW" type="number" step="any"></label>
+      </div>
+      <button>Ayarları kaydet</button>
+      <span id="setMsg" class="muted"></span>
+    </form>
+  </section>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>
