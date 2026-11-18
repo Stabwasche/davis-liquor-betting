@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Los Santos Race Book</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bg"></div>
+
+<!-- ANA MENÜ -->
+<main id="menu" class="view">
+  <div class="menu-card">
+    <p class="menu-sub">Canlı at yarışı</p>
+    <h1 class="site-name">LOS SANTOS RACE BOOK</h1>
+    <div class="next-box" role="status">
+      <div><small>SIRADAKİ YARIŞ</small><b id="menuNext">—</b></div>
+      <div><small>SON KAZANAN</small><b id="menuLast">—</b></div>
+    </div>
+    <nav class="menu-buttons">
+      <button data-go="race">Yarışı izle ve bahis yap</button>
+      <button data-go="pay">Ödeme ekranı</button>
+      <button data-go="rules">Kural kitapçığı</button>
+      <a class="btn" href="admin.html">Personel girişi</a>
+    </nav>
+    <p class="menu-foot">Bahis için personelden aldığın bilet kodunu hazır tut.
+      <button type="button" id="crtToggle" class="linkbtn">CRT efekti: açık</button></p>
+  </div>
+</main>
+
+<!-- YARIŞ EKRANI -->
+<main id="race" class="view hidden">
+  <header class="topbar">
+    <strong class="site-name">LOS SANTOS RACE BOOK</strong>
+    <span id="clock">Bağlanıyor...</span>
+    <span class="top-actions">
+      <button data-go="pay" class="small">Ödeme ekranı</button>
+      <button data-go="rules" class="small">Kurallar</button>
+      <button data-go="menu" class="small">Menü</button>
+    </span>
+  </header>
+
+  <div class="race-grid">
+    <section class="stage">
+      <div class="tv">
+        <canvas id="track" width="1000" height="560" aria-label="Yarış pisti, kuş bakışı"></canvas>
+        <div class="tv-hud">
+          <span id="liveTag" class="live">● BAHİSLER AÇIK</span>
+          <span id="raceNo">YARIŞ #—</span>
+          <span id="raceClock">00:00.0</span>
+        </div>
+        <div id="banner" class="banner hidden"></div>
+      </div>
+      <div class="ticker" role="status" aria-live="polite"><span class="tag">SPİKER</span><span id="tickerText">Yarış başlamak üzere.</span></div>
+      <section id="results" class="paper results hidden">
+        <h2 id="resTitle">RESMİ SONUÇ</h2>
+        <table id="resTable"></table>
+      </section>
+    </section>
+
+    <aside class="side">
+      <section class="paper board">
+        <h2>PROGRAM VE ORANLAR</h2>
+        <table id="tote"></table>
+      </section>
+      <section class="paper board">
+        <h2>CANLI SIRALAMA</h2>
+        <ol id="live" class="live-list"></ol>
+      </section>
+      <form id="slip" class="paper slip" autocomplete="off">
+        <h2>BAHİS FİŞİ</h2>
+        <label>Bilet kodu<input id="codeIn" maxlength="12" placeholder="A-XXXXXX" spellcheck="false"></label>
+        <label>Karakter adı<input id="nameIn" maxlength="40" placeholder="Ad Soyad"></label>
+        <button type="submit" id="giveBtn">Bahsi kaydet</button>
+        <div id="pick" class="pick hidden"></div>
+        <p id="slipMsg" class="slip-msg" role="status"></p>
+      </form>
+      <section id="mine" class="paper mine hidden">
+        <h2>BAHSİM</h2>
+        <div id="mineBody"></div>
+        <button type="button" id="mineToPay" class="small hidden">Ödeme fişini aç</button>
+      </section>
+    </aside>
+  </div>
+</main>
+
+<!-- ÖDEME EKRANI -->
+<main id="pay" class="view hidden">
+  <header class="topbar">
+    <strong class="site-name">LOS SANTOS RACE BOOK</strong>
+    <span>ÖDEME EKRANI</span>
+    <span class="top-actions">
+      <button data-go="race" class="small">Yarış ekranı</button>
+      <button data-go="menu" class="small">Menü</button>
+    </span>
+  </header>
+  <div class="pay-wrap">
+    <form id="payForm" class="paper slip" autocomplete="off">
+      <h2>ÖDEME SORGULA</h2>
+      <p class="slip-note">Bilet kodunu gir. Sonucunu ve kazancını burada görürsün. Kazandıysan ödeme fişini yetkiliye göster.</p>
+      <label>Bilet kodu<input id="payCode" maxlength="12" placeholder="A-XXXXXX" spellcheck="false"></label>
+      <label>Karakter adı<input id="payName" maxlength="40" placeholder="Ad Soyad"></label>
+      <button type="submit" id="payBtn">Sorgula</button>
+      <p id="payMsg" class="slip-msg" role="status"></p>
+    </form>
+    <div id="payDoc" class="paper doc hidden">
+      <div id="payBody"></div>
+      <div id="payStamp" class="stamp"></div>
+    </div>
+  </div>
+</main>
+
+<!-- KURAL KİTAPÇIĞI -->
+<aside id="rules" class="rules hidden">
+  <div class="paper rulebook">
+    <h2>KURAL KİTAPÇIĞI</h2>
+    <ol>
+      <li>Biletler yalnızca yetkili personelden alınır. Kodu kimseyle paylaşma.</li>
+      <li>Her kodun tek kullanımı vardır. Kaydedilen bahis geri alınmaz.</li>
+      <li>Biletin üstünde isim yazıyorsa yalnızca o kişi oynayabilir.</li>
+      <li>Hatalı kodu üst üste 5 kez girersen ekran 30 saniye kilitlenir.</li>
+      <li>Kazançlar ekrandan değil, yetkili tarafından nakit olarak ödenir. Ödeme ekranındaki fişi göster.</li>
+    </ol>
+    <h3>Yarış kuralları</h3>
+    <p id="rulesRace">Yükleniyor...</p>
+    <table id="oddsTable"></table>
+    <button data-go="back" class="small">Kapat</button>
+  </div>
+</aside>
+
+<div class="crt-bezel" aria-hidden="true"><i class="crt-led"></i><span class="crt-brand">RACE BOOK TV</span></div>
+<div class="crt-fx" aria-hidden="true"></div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
